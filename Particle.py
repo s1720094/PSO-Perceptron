@@ -1,32 +1,32 @@
 import numpy as np
 import itertools
+from nn import forward_pass
 
 class Particle: # all the material that is relavant at the level of the individual particles
 
-    def __init__(self, dim, minx, maxx, point, label, points):
+    def __init__(self, dim, minx, maxx, point, label):
         self.label = label
-        self.position = np.empty
-        self.points = points
+        self.position = []
         for dimension in point:
-            self.position(dimension + np.random.uniform(low=minx, high=maxx))
+            self.position.append(int(dimension + np.random.uniform(low=minx, high=maxx)))
 
         self.velocity = np.random.uniform(low=-0.1, high=0.1, size=dim)
         self.best_particle_pos = self.position
         self.dim = dim
 
-        self.fitness = fitness(points)
+        self.fitness = 100000000
         self.best_particle_fitness = self.fitness   # we couldd start with very large number here,
                                                     #but the actual value is better in case we are lucky
 
-    def fitness(self):
-        distance = 0
-        for i in range(self.dim):
-            distance += (self.position[i] - self.points[self.label][i])**2
-        return (distance)**(1/self.dim)
+    # def fitnessFunc(self):
+    #     distance = 0
+    #     for i in range(self.dim):
+    #         distance += (self.position[i] - self.points[self.label][i])**2
+    #     return (distance)**(1/self.dim)
 
-    def setPos(self, pos):
+    def setPos(self, pos, X, Y):
         self.position = pos
-        self.fitness = fitness()
+        self.fitness = forward_pass(X,Y, self.position)
         if self.fitness<self.best_particle_fitness:     # to update the personal best both
                                                         # position (for velocity update) and
                                                         # fitness (the new standard) are needed
